@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './assets/download.png';
+import './app.css';
+import ItemCard from './componets/item_card';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const items = [
+    {
+        title: "Item1",
+        desc: "Item1 Description",
+        logo: logo
+    },
+    {
+        title: "Item2",
+        desc: "Item2 Description",
+        logo: logo
+    }
+];
+
+function App(){
+    return (
+        <div>
+            { items.map((item) => {
+                return (
+                    <ItemCard title={item.title} desc={item.desc} logo={item.logo}/>
+                );
+            }) }
+        </div>
+    );
 }
 
 export default App;

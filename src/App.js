@@ -30,10 +30,8 @@ function App(){
             desc: desc,
             logo: logo
         }
-        let newItems = items;
-        newItems.push(data);
+        let newItems = [...items, data];
         addItems(newItems);
-        console.log(data);
     }
 
     return (

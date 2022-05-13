@@ -1,21 +1,12 @@
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import logo from './assets/download.png';
 import './app.css';
 import ItemCard from './componets/item_card';
 import { Button, TextField, Grid } from '@mui/material';
+import axios from 'axios';
 
 const items_default = [
-    {
-        title: "Item1",
-        desc: "Item1 Description",
-        logo: logo
-    },
-    {
-        title: "Item2",
-        desc: "Item2 Description",
-        logo: logo
-    }
+
 ];
 
 function App(){
@@ -23,6 +14,8 @@ function App(){
     const [items, addItems] = new useState(items_default);
     const [title, addTitle] = new useState('');
     const [desc, addDesc] = new useState('');
+
+    const [test, addTest] = new useState('Empty');
 
     function handleButtonClick(event){
         let data = {
@@ -33,6 +26,38 @@ function App(){
         let newItems = [...items, data];
         addItems(newItems);
     }
+
+    const fetchItems = async () => {
+        //http://localhost:5000/items
+        const resp = await axios.get('https://v2.jokeapi.dev/joke/Any?safe-mode');
+        
+        let sample = {
+            title: JSON.stringify(resp.data.setup),
+            desc: JSON.stringify(resp.data.delivery),
+            logo: logo
+        }
+        
+        addItems([...items, sample]);
+        addTest(JSON.stringify(resp.data.setup));
+        
+        // axios.get('http://localhost:5000/items')
+        // .then((res2) => {
+        //     addItems(res2);
+        // });
+
+        // [{
+        //     title: '',
+        //     desc: ''
+        // },
+        // {
+        //     title: '',
+        //     desc: ''
+        // }]
+    }
+
+    useEffect(()=>{
+        fetchItems();
+    },[]);
 
     return (
         <Grid container direction="row" width="100%">
@@ -81,10 +106,14 @@ function App(){
                     </Grid>
                 </Grid>
 
+                <h3> {test} </h3>
+
             </Grid>
 
             <Grid item flexGrow={1}>
             </Grid>
+
+
         </Grid>
     );
 }

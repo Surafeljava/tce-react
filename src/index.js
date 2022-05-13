@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './app';
 import Item from './item';
+import About from './about';
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route 
 } from 'react-router-dom';
@@ -16,6 +17,7 @@ root.render(
         <Routes>
             <Route exact path='/' element={<App />}></Route>
             <Route exact path='/item' element={<Item />}></Route>
+            <Route exact path='/about' element={<About />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

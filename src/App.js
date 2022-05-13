@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import logo from './assets/download.png';
 import './app.css';
 import ItemCard from './componets/item_card';
-import { Button, TextField, Grid } from '@mui/material';
+import { Button, TextField, Grid, CircularProgress} from '@mui/material';
 import axios from 'axios';
 
 const items_default = [
@@ -17,37 +17,50 @@ function App(){
 
     const [test, addTest] = new useState('Empty');
 
-    function handleButtonClick(event){
-        let data = {
+    const [loading, setLoading] = new useState(false);
+
+    // function handleButtonClick(event){
+    //     let data = {
+    //         title: title,
+    //         desc: desc,
+    //         logo: logo
+    //     }
+    //     let newItems = [...items, data];
+    //     addItems(newItems);
+    // }
+
+    function handleAddButton(event){
+
+        setLoading(true);
+        //upload here
+        axios.post('http://localhost:5000/items', 
+        {
             title: title,
             desc: desc,
-            logo: logo
-        }
-        let newItems = [...items, data];
-        addItems(newItems);
+            logo: "https://ionicframework.com/docs/icons/logo-react-icon.png"
+        }).then((result) => {
+            console.log(result.status);
+            //call fetchItems
+            reset();
+            fetchItems();
+        });
     }
 
     const fetchItems = async () => {
-        //http://localhost:5000/items
         const resp = await axios.get('http://localhost:5000/items');
-        
-        // addItems(resp.data);
+        addItems(resp.data);
 
-        console.log(resp);
+        setLoading(false);
         
         // axios.get('http://localhost:5000/items')
         // .then((res2) => {
-        //     addItems(res2);
+        //     addItems(res2.data);
         // });
+    }
 
-        // [{
-        //     title: '',
-        //     desc: ''
-        // },
-        // {
-        //     title: '',
-        //     desc: ''
-        // }]
+    function reset(){
+        addTitle('');
+        addDesc('');
     }
 
     useEffect(()=>{
@@ -90,18 +103,22 @@ function App(){
                         <Button 
                         fullWidth 
                         variant='contained'
-                        onClick={handleButtonClick}
+                        onClick={handleAddButton}
                         >  
                             Add 
                         </Button>
                     </Grid>
 
                     <Grid item xs={4}>
-                        <Button fullWidth variant='outlined'> Reset </Button>
+                        <Button fullWidth variant='outlined'
+                        onClick={reset}
+                        > Reset </Button>
                     </Grid>
                 </Grid>
 
-                <h3> {test} </h3>
+                {loading===true && (
+                    <CircularProgress/>
+                )}
 
             </Grid>
 

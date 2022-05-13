@@ -29,16 +29,11 @@ function App(){
 
     const fetchItems = async () => {
         //http://localhost:5000/items
-        const resp = await axios.get('https://v2.jokeapi.dev/joke/Any?safe-mode');
+        const resp = await axios.get('http://localhost:5000/items');
         
-        let sample = {
-            title: JSON.stringify(resp.data.setup),
-            desc: JSON.stringify(resp.data.delivery),
-            logo: logo
-        }
-        
-        addItems([...items, sample]);
-        addTest(JSON.stringify(resp.data.setup));
+        // addItems(resp.data);
+
+        console.log(resp);
         
         // axios.get('http://localhost:5000/items')
         // .then((res2) => {
